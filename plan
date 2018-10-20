@@ -1,0 +1,291 @@
+import java.util.*;
+ 
+public class Date { 
+    // enumeration for format style
+    public enum DateFormat {FMT1, FMT2, FMT3}
+   
+    // data members
+    private static int month;
+    private static int day;
+    private static int year;
+    private static int hour;
+    private static int minute;
+    private DateFormat format;
+    public static int id;
+    public static int i=0,n=0;
+    public static int event[][]=new int[10][4];
+   
+    // private static data //**complete**//
+    private static int[] lastdayofmonth = {0, 31, 28, 31, 30, 31, 30, 30, 31, 31, 30, 31, 30, 31}; // Ending Dates for Each month
+    private static String[] nameofmonth = {null, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+ 
+    // private "helper" methods
+    private static boolean isLeapYear(int y) {
+        //checks to see if it is leap year   //**complete**//
+        return ((y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0));
+    }
+ 
+  
+    private static int getLastDayOfMonth(int m, int y) {
+        //m is the month
+        if (m != 2) {
+            return lastdayofmonth[m]; //return last day of month from the array for index m
+        } 
+               
+        else { 
+            boolean leapYear = isLeapYear(y); 
+            
+            if (leapYear)
+                return 29;
+            else
+                return 28;
+        }
+    }
+ 
+    private static int getLastDayOfYear(int y) {
+        boolean leapYear = isLeapYear(y);
+       
+        if (leapYear)
+            return 366;
+        else
+            return 365;
+    }
+ 
+    private static boolean isValidMonth(int m) {
+        //if m is between 1 and 12 it is valid
+        if (m >= 1 && m <= 12)
+            return true; 
+        else 
+            return false; 
+    }
+ 
+    private static boolean isValidYear(int y) {
+        if (y >= 0)
+            return true;
+        else
+            return false;
+    }
+ 
+    private static boolean isValidDate(int m, int d, int y) { // checks to see if date entered is valid
+        if (isValidMonth(m) == false || isValidYear(y) == false) {
+            return false;
+        }
+         
+        else { 
+            int lastDayOfMonth = getLastDayOfMonth(m, y);
+               if (d >= 1 && d <= lastDayOfMonth)
+                return true;
+               else 
+                return false;
+        }
+    }
+   
+    // constructors
+    // default constructor determines current date (already completed)
+    public Date() {
+        Calendar c = Calendar.getInstance();
+        month = c.get(Calendar.MONTH) + 1 - Calendar.JANUARY;
+        day = c.get(Calendar.DATE);
+        year = c.get(Calendar.YEAR);
+        format = DateFormat.FMT2;
+    }
+ 
+    public Date(int m, int d, int y) {
+        //set instance variables
+        month = m;
+        day = d;
+        year = y;
+    }
+   
+    // adjusts format field
+    public String toString() {
+        if (format == DateFormat.FMT1) {
+            return "";
+        } else if (format == DateFormat.FMT2) {
+            return "";
+        } else {
+            return "";
+        }
+    }
+   
+    // other helper methods
+    public Date copy() {
+        return new Date(month, day, year);
+    }
+ 
+    public boolean equals(Date d) { //checks to see if date is equal
+        if (this.month == d.month && this.day == d.day && this.year == d.year)
+            return true;
+        else
+            return false;
+    }
+ 
+    public int compareTo(Date d) {
+        int d1 = this.year - d.year;
+       
+        //checks to see if year is equal or not
+        if (d1 == 0) {
+            int d2 = this.month - d.month;
+           
+            if (d2 == 0) {
+                  return this.day - d.day;
+            } 
+            
+            else {
+                  return d2;
+            }
+        }      
+            else {
+                  return d1;
+        }
+    }
+ 
+    public void setFormat(DateFormat fmt) { format = fmt; }
+ 
+    public DateFormat getFormat() { return format; }
+ 
+    public void setDate(int m, int d, int y) { month = m; day = d; year = y; }
+   
+    public void setMonth(int m) { month = m; }
+    
+    public void setDay(int d) { day = d;}
+    
+    public void setYear(int y) {year = y; }
+    
+    public int getDayOfYear() {return 1;}
+    
+   
+    
+    // date arithmetic
+ 
+    public int diff(Date d) { return 0; }
+   
+    public static void createEvent()  {
+    Scanner in=new Scanner(System.in);
+   System.out.println("Please enter a number to save your event to : ");
+    id=in.nextInt();
+    event[i][0]=id;
+   System.out.println("Please enter the day you wish to make an event for: ");
+    day=in.nextInt();
+    
+    //Message to input a new event month
+    System.out.println("Please enter the month you wish to select: ");
+    month=in.nextInt();
+    //check whether the input month is valid or not.
+    if(isValidMonth(month))
+          event[i][2]=month;
+    
+    //Message to input a new event year
+    System.out.println("Please enter the year to create your event: ");
+    year=in.nextInt();
+     
+    System.out.println("Please enter the hour: ");
+    hour=in.nextInt();
+    
+    System.out.println("Please enter the minute: ");
+    minute=in.nextInt();
+    
+    //check whether the input year is valid or not.
+    if(isValidYear(year))
+          event[i][3]=year;
+    
+    //check whether date of event is valid or not
+    if(isValidDate(month,day,year));
+          event[i][1]=day;             
+    
+          //Print the event date
+    System.out.print("Your scheduled event date is: "+event[i][1]+"-"+event[i][2]+"-"+event[i][3] + " " + "at" + " " + hour + ":" + minute);
+    i=i+1;
+    n=i;
+    }
+   
+    //Method to change the event
+    public static void changeEvent() {
+    Scanner in=new Scanner(System.in);
+    System.out.println("Please enter the number to change event: ");
+    id=in.nextInt();
+    System.out.println("Please enter the day you wish to create an event for: ");
+    day=in.nextInt();
+    System.out.println("Please enter the month you wish to select: ");
+    month=in.nextInt();
+    System.out.println("Please enter the year to create event: ");
+    year=in.nextInt();
+    System.out.println("Please enter the hour: ");
+    hour=in.nextInt();
+    System.out.println("Please enter the minute: ");
+    minute=in.nextInt();
+    
+    //loop to store the updated values in an array
+    for(int i=0;i<n;i++) {
+          if(event[i][0]==id) { // this stores the updates into new arrays
+         event[i][1]=day;
+         event[i][2]=month;
+         event[i][3]=year;
+          }
+      }
+    }
+   
+    public static void deleteEvent() {
+    Scanner in=new Scanner(System.in);
+    System.out.println("Please enter the number to delete event: ");
+    id=in.nextInt();
+    
+    //Loop to delete the event id
+    for(int i=0;i<n;i++)  {
+          //check for the event to delete
+          if(event[i][0]==id) {
+               event[i][0]=event[i+1][0];
+         event[i][1]=event[i+1][1]; //updates them
+         event[i][2]=event[i+1][2];
+         event[i][3]=event[i+1][3];
+          }
+      }
+    }
+
+    public static void displayEvent() { 
+    for(int j=0;j<n;j++)  {             
+          System.out.println("Event number is: "+event[j][0]);
+          System.out.println("Event date is:"+event[j][1]+"/"+event[j][2]+"/"+event[j][3] + " " + "at" + " " + hour + ":" + minute);
+          //shows the display events in a loop
+    }
+  }
+  
+  
+ 
+   
+    public static void main (String[] args)  {
+    //declare a variable
+    int choice;
+    Scanner in=new Scanner(System.in);        
+
+    do { 
+             System.out.println("*** EVENT PLANNER 2.0 ***");
+          System.out.println("\n\n1)Create a new event! \n2)Change a saved event! \n3)Delete a saved event! \n4)Show saved events \n5)Exit");
+          choice=in.nextInt();
+         
+          //if else statement
+if (choice == 1) { 
+createEvent();
+ }
+ 
+else if (choice == 2)   {
+changeEvent();
+ }
+ 
+ else if (choice == 3 ) {
+deleteEvent();
+ }
+ 
+ else if (choice == 4)  {
+ displayEvent();
+ }
+ 
+ else if (choice == 5) {
+    System.out.println("Goodbye!!");
+   break;
+ }
+ 
+  } while (choice != 5); // end do while
+  
+  }
+} // end
